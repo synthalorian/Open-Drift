@@ -13,10 +13,10 @@ class MasterVolumeSlider extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: SynthwaveColors.surfaceDark.withOpacity(0.8),
+        color: SynthwaveColors.surfaceDark.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: SynthwaveColors.gridLine.withOpacity(0.5),
+          color: SynthwaveColors.gridLine.withValues(alpha: 0.5),
           width: 0.5,
         ),
       ),
@@ -32,7 +32,7 @@ class MasterVolumeSlider extends ConsumerWidget {
             size: 22,
             shadows: [
               Shadow(
-                color: SynthwaveColors.neonPink.withOpacity(0.5),
+                color: SynthwaveColors.neonPink.withValues(alpha: 0.5),
                 blurRadius: 10,
               ),
             ],
@@ -44,7 +44,7 @@ class MasterVolumeSlider extends ConsumerWidget {
                 activeTrackColor: SynthwaveColors.neonPink,
                 inactiveTrackColor: SynthwaveColors.sliderTrack,
                 thumbColor: SynthwaveColors.hotPink,
-                overlayColor: SynthwaveColors.neonPink.withOpacity(0.2),
+                overlayColor: SynthwaveColors.neonPink.withValues(alpha: 0.2),
                 trackHeight: 4,
                 thumbShape:
                     const RoundSliderThumbShape(enabledThumbRadius: 8),

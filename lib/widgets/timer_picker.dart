@@ -26,10 +26,10 @@ class TimerPicker extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: SynthwaveColors.surfaceDark.withOpacity(0.8),
+        color: SynthwaveColors.surfaceDark.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: SynthwaveColors.gridLine.withOpacity(0.5),
+          color: SynthwaveColors.gridLine.withValues(alpha: 0.5),
           width: 0.5,
         ),
       ),
@@ -44,7 +44,7 @@ class TimerPicker extends ConsumerWidget {
                 size: 18,
                 shadows: [
                   Shadow(
-                    color: SynthwaveColors.neonCyan.withOpacity(0.5),
+                    color: SynthwaveColors.neonCyan.withValues(alpha: 0.5),
                     blurRadius: 8,
                   ),
                 ],
@@ -65,10 +65,10 @@ class TimerPicker extends ConsumerWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: SynthwaveColors.neonCyan.withOpacity(0.15),
+                    color: SynthwaveColors.neonCyan.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: SynthwaveColors.neonCyan.withOpacity(0.4),
+                      color: SynthwaveColors.neonCyan.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Text(
@@ -134,7 +134,7 @@ class _TimerChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
           color: isSelected
-              ? SynthwaveColors.neonCyan.withOpacity(0.2)
+              ? SynthwaveColors.neonCyan.withValues(alpha: 0.2)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
@@ -185,9 +185,9 @@ class _TimerActionButton extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: timerActive
-              ? SynthwaveColors.neonPink.withOpacity(0.2)
+              ? SynthwaveColors.neonPink.withValues(alpha: 0.2)
               : canStart
-                  ? SynthwaveColors.neonCyan.withOpacity(0.15)
+                  ? SynthwaveColors.neonCyan.withValues(alpha: 0.15)
                   : Colors.transparent,
           border: Border.all(
             color: timerActive

@@ -52,7 +52,7 @@ class SavedMixesScreen extends ConsumerWidget {
                         shadows: [
                           Shadow(
                             color: SynthwaveColors.neonCyan
-                                .withOpacity(0.5),
+                                .withValues(alpha: 0.5),
                             blurRadius: 12,
                           ),
                         ],
@@ -119,7 +119,7 @@ class _EmptyState extends StatelessWidget {
             'Create an atmosphere and save it for later',
             style: TextStyle(
               fontSize: 13,
-              color: SynthwaveColors.textSecondary.withOpacity(0.6),
+              color: SynthwaveColors.textSecondary.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -158,7 +158,7 @@ class _MixCard extends ConsumerWidget {
           color: SynthwaveColors.cardBackground,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: SynthwaveColors.cardBorder.withOpacity(0.5),
+            color: SynthwaveColors.cardBorder.withValues(alpha: 0.5),
             width: 0.5,
           ),
         ),
@@ -211,7 +211,7 @@ class _MixCard extends ConsumerWidget {
                     _formatDate(mix.createdAt),
                     style: TextStyle(
                       fontSize: 11,
-                      color: SynthwaveColors.textSecondary.withOpacity(0.6),
+                      color: SynthwaveColors.textSecondary.withValues(alpha: 0.6),
                       letterSpacing: 1,
                     ),
                   ),
@@ -295,10 +295,10 @@ class _SoundChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: tile.accentColor.withOpacity(0.12),
+        color: tile.accentColor.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: tile.accentColor.withOpacity(0.3),
+          color: tile.accentColor.withValues(alpha: 0.3),
           width: 0.5,
         ),
       ),
@@ -324,7 +324,7 @@ class _SoundChip extends StatelessWidget {
             '${(volume * 100).round()}%',
             style: TextStyle(
               fontSize: 10,
-              color: tile.accentColor.withOpacity(0.6),
+              color: tile.accentColor.withValues(alpha: 0.6),
             ),
           ),
         ],

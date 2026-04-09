@@ -91,7 +91,7 @@ class SynthwaveTheme {
         activeTrackColor: SynthwaveColors.neonPink,
         inactiveTrackColor: SynthwaveColors.sliderTrack,
         thumbColor: SynthwaveColors.neonCyan,
-        overlayColor: SynthwaveColors.neonCyan.withOpacity(0.2),
+        overlayColor: SynthwaveColors.neonCyan.withValues(alpha: 0.2),
         trackHeight: 3,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
       ),
@@ -102,7 +102,7 @@ class SynthwaveTheme {
         backgroundColor: SynthwaveColors.neonPink,
         foregroundColor: Colors.white,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: SynthwaveColors.surfaceDark,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),

@@ -23,7 +23,7 @@ class SoundTileWidget extends ConsumerWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: isActive
-            ? tile.accentColor.withOpacity(0.15)
+            ? tile.accentColor.withValues(alpha: 0.15)
             : SynthwaveColors.cardBackground,
         border: Border.all(
           color: isActive ? tile.accentColor : SynthwaveColors.cardBorder,
@@ -32,7 +32,7 @@ class SoundTileWidget extends ConsumerWidget {
         boxShadow: isActive
             ? [
                 BoxShadow(
-                  color: tile.accentColor.withOpacity(0.3),
+                  color: tile.accentColor.withValues(alpha: 0.3),
                   blurRadius: 16,
                   spreadRadius: -2,
                 ),
@@ -61,7 +61,7 @@ class SoundTileWidget extends ConsumerWidget {
                     shadows: isActive
                         ? [
                             Shadow(
-                              color: tile.accentColor.withOpacity(0.6),
+                              color: tile.accentColor.withValues(alpha: 0.6),
                               blurRadius: 20,
                             ),
                           ]
@@ -95,9 +95,9 @@ class SoundTileWidget extends ConsumerWidget {
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: tile.accentColor,
                         inactiveTrackColor:
-                            tile.accentColor.withOpacity(0.2),
+                            tile.accentColor.withValues(alpha: 0.2),
                         thumbColor: tile.accentColor,
-                        overlayColor: tile.accentColor.withOpacity(0.15),
+                        overlayColor: tile.accentColor.withValues(alpha: 0.15),
                         trackHeight: 2,
                         thumbShape:
                             const RoundSliderThumbShape(enabledThumbRadius: 5),

@@ -34,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
           decoration: InputDecoration(
             hintText: 'Mix name...',
             hintStyle:
-                TextStyle(color: SynthwaveColors.textSecondary.withOpacity(0.5)),
+                TextStyle(color: SynthwaveColors.textSecondary.withValues(alpha: 0.5)),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: SynthwaveColors.gridLine),
             ),
@@ -142,7 +142,7 @@ class HomeScreen extends ConsumerWidget {
                             shadows: [
                               Shadow(
                                 color: SynthwaveColors.neonCyan
-                                    .withOpacity(0.5),
+                                    .withValues(alpha: 0.5),
                                 blurRadius: 16,
                               ),
                             ],
@@ -154,7 +154,7 @@ class HomeScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.w500,
-                            color: SynthwaveColors.hotPink.withOpacity(0.7),
+                            color: SynthwaveColors.hotPink.withValues(alpha: 0.7),
                             letterSpacing: 3,
                           ),
                         ),
@@ -167,11 +167,11 @@ class HomeScreen extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: SynthwaveColors.neonPink.withOpacity(0.15),
+                          color: SynthwaveColors.neonPink.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color:
-                                SynthwaveColors.neonPink.withOpacity(0.4),
+                                SynthwaveColors.neonPink.withValues(alpha: 0.4),
                           ),
                         ),
                         child: Row(
@@ -284,7 +284,7 @@ class HomeScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(10),
                             side: BorderSide(
                               color: activeSoundCount > 0
-                                  ? SynthwaveColors.neonPink.withOpacity(0.4)
+                                  ? SynthwaveColors.neonPink.withValues(alpha: 0.4)
                                   : SynthwaveColors.gridLine,
                             ),
                           ),
