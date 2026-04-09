@@ -1,88 +1,212 @@
 import 'package:flutter/material.dart';
-import '../models/sound_tile.dart';
-import '../theme/drift_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/audio_provider.dart';
+import '../theme/synthwave_theme.dart';
 
-class TimerPicker extends StatelessWidget {
-  final TimerDuration? activeTimer;
-  final Duration? timeRemaining;
-  final ValueChanged<TimerDuration> onSelected;
-  final VoidCallback onCancel;
+class TimerPicker extends ConsumerWidget {
+  const TimerPicker({super.key});
 
-  const TimerPicker({
-    super.key,
-    required this.activeTimer,
-    required this.timeRemaining,
-    required this.onSelected,
-    required this.onCancel,
-  });
-
-  String _formatRemaining(Duration d) {
-    final h = d.inHours;
-    final m = d.inMinutes.remainder(60);
-    final s = d.inSeconds.remainder(60);
-    if (h > 0) return '${h}h ${m.toString().padLeft(2, '0')}m';
-    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+  String _formatDuration(Duration d) {
+    final hours = d.inHours;
+    final minutes = d.inMinutes.remainder(60);
+    final seconds = d.inSeconds.remainder(60);
+    if (hours > 0) {
+      return '${hours}h ${minutes.toString().padLeft(2, '0')}m';
+    }
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (activeTimer != null && timeRemaining != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _formatRemaining(timeRemaining!),
-                  style: TextStyle(
-                    color: DriftTheme.neonCyan,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'monospace',
+  Widget build(BuildContext context, WidgetRef ref) {
+    final audioState = ref.watch(audioProvider);
+    final selectedDuration = audioState.timerDuration;
+    final timerActive = audioState.timerActive;
+    final remaining = audioState.timerRemaining;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: SynthwaveColors.surfaceDark.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: SynthwaveColors.gridLine.withOpacity(0.5),
+          width: 0.5,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.timer,
+                color: SynthwaveColors.neonCyan,
+                size: 18,
+                shadows: [
+                  Shadow(
+                    color: SynthwaveColors.neonCyan.withOpacity(0.5),
+                    blurRadius: 8,
                   ),
+                ],
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'SLEEP TIMER',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: SynthwaveColors.neonCyan,
+                  letterSpacing: 2,
                 ),
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: onCancel,
-                  child: Icon(Icons.close, color: DriftTheme.neonPink, size: 20),
-                ),
-              ],
-            ),
-          ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: TimerDuration.values.map((t) {
-            final isSelected = t == activeTimer;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: GestureDetector(
-                onTap: () => onSelected(t),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              ),
+              const Spacer(),
+              if (timerActive && remaining != null)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: isSelected ? DriftTheme.neonPink : DriftTheme.card,
-                    borderRadius: BorderRadius.circular(20),
+                    color: SynthwaveColors.neonCyan.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: isSelected ? DriftTheme.neonPink : DriftTheme.surface,
+                      color: SynthwaveColors.neonCyan.withOpacity(0.4),
                     ),
                   ),
                   child: Text(
-                    t.label,
+                    _formatDuration(remaining),
                     style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.white60,
                       fontSize: 13,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: FontWeight.w700,
+                      color: SynthwaveColors.neonCyan,
+                      fontFamily: 'monospace',
                     ),
                   ),
                 ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              ...TimerDuration.values.map((d) => Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: _TimerChip(
+                        label: d.label,
+                        isSelected: selectedDuration == d,
+                        onTap: () => ref
+                            .read(audioProvider.notifier)
+                            .setTimerDuration(d),
+                      ),
+                    ),
+                  )),
+              const SizedBox(width: 8),
+              _TimerActionButton(
+                timerActive: timerActive,
+                canStart: selectedDuration != TimerDuration.infinite,
+                onStart: () =>
+                    ref.read(audioProvider.notifier).startTimer(),
+                onStop: () => ref.read(audioProvider.notifier).stopTimer(),
               ),
-            );
-          }).toList(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimerChip extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _TimerChip({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? SynthwaveColors.neonCyan.withOpacity(0.2)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected
+                ? SynthwaveColors.neonCyan
+                : SynthwaveColors.gridLine,
+            width: isSelected ? 1.0 : 0.5,
+          ),
         ),
-      ],
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: isSelected
+                  ? SynthwaveColors.neonCyan
+                  : SynthwaveColors.textSecondary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TimerActionButton extends StatelessWidget {
+  final bool timerActive;
+  final bool canStart;
+  final VoidCallback onStart;
+  final VoidCallback onStop;
+
+  const _TimerActionButton({
+    required this.timerActive,
+    required this.canStart,
+    required this.onStart,
+    required this.onStop,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: timerActive ? onStop : (canStart ? onStart : null),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: timerActive
+              ? SynthwaveColors.neonPink.withOpacity(0.2)
+              : canStart
+                  ? SynthwaveColors.neonCyan.withOpacity(0.15)
+                  : Colors.transparent,
+          border: Border.all(
+            color: timerActive
+                ? SynthwaveColors.neonPink
+                : canStart
+                    ? SynthwaveColors.neonCyan
+                    : SynthwaveColors.gridLine,
+          ),
+        ),
+        child: Icon(
+          timerActive ? Icons.stop : Icons.play_arrow,
+          size: 18,
+          color: timerActive
+              ? SynthwaveColors.neonPink
+              : canStart
+                  ? SynthwaveColors.neonCyan
+                  : SynthwaveColors.inactive,
+        ),
+      ),
     );
   }
 }

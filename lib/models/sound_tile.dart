@@ -1,93 +1,123 @@
+import 'package:flutter/material.dart';
+
+enum SoundCategory {
+  nature,
+  mechanical,
+  ambient,
+  musical,
+}
+
 class SoundTile {
   final String id;
   final String name;
-  final String icon;
   final String assetPath;
-  bool isActive;
-  double volume;
+  final IconData icon;
+  final SoundCategory category;
+  final Color accentColor;
 
-  SoundTile({
+  const SoundTile({
     required this.id,
     required this.name,
-    required this.icon,
     required this.assetPath,
-    this.isActive = false,
-    this.volume = 0.7,
+    required this.icon,
+    required this.category,
+    required this.accentColor,
   });
 
-  SoundTile copyWith({
-    bool? isActive,
-    double? volume,
-  }) {
-    return SoundTile(
-      id: id,
-      name: name,
-      icon: icon,
-      assetPath: assetPath,
-      isActive: isActive ?? this.isActive,
-      volume: volume ?? this.volume,
-    );
-  }
+  static const List<SoundTile> allSounds = [
+    SoundTile(
+      id: 'rain',
+      name: 'Rain',
+      assetPath: 'assets/audio/rain.mp3',
+      icon: Icons.water_drop,
+      category: SoundCategory.nature,
+      accentColor: Color(0xFF00D4FF),
+    ),
+    SoundTile(
+      id: 'vinyl_crackle',
+      name: 'Vinyl Crackle',
+      assetPath: 'assets/audio/vinyl_crackle.mp3',
+      icon: Icons.album,
+      category: SoundCategory.mechanical,
+      accentColor: Color(0xFFFF6EC7),
+    ),
+    SoundTile(
+      id: 'tape_hiss',
+      name: 'Tape Hiss',
+      assetPath: 'assets/audio/tape_hiss.mp3',
+      icon: Icons.radio,
+      category: SoundCategory.mechanical,
+      accentColor: Color(0xFFFFB347),
+    ),
+    SoundTile(
+      id: 'synth_drone',
+      name: 'Synth Drone',
+      assetPath: 'assets/audio/synth_drone.mp3',
+      icon: Icons.piano,
+      category: SoundCategory.musical,
+      accentColor: Color(0xFFBF40BF),
+    ),
+    SoundTile(
+      id: 'thunder',
+      name: 'Thunder',
+      assetPath: 'assets/audio/thunder.mp3',
+      icon: Icons.bolt,
+      category: SoundCategory.nature,
+      accentColor: Color(0xFFE0E722),
+    ),
+    SoundTile(
+      id: 'wind',
+      name: 'Wind',
+      assetPath: 'assets/audio/wind.mp3',
+      icon: Icons.air,
+      category: SoundCategory.nature,
+      accentColor: Color(0xFF87CEEB),
+    ),
+    SoundTile(
+      id: 'fireplace',
+      name: 'Fireplace',
+      assetPath: 'assets/audio/fireplace.mp3',
+      icon: Icons.local_fire_department,
+      category: SoundCategory.ambient,
+      accentColor: Color(0xFFFF6347),
+    ),
+    SoundTile(
+      id: 'cafe',
+      name: 'Cafe',
+      assetPath: 'assets/audio/cafe.mp3',
+      icon: Icons.coffee,
+      category: SoundCategory.ambient,
+      accentColor: Color(0xFFD2691E),
+    ),
+    SoundTile(
+      id: 'ocean_waves',
+      name: 'Ocean Waves',
+      assetPath: 'assets/audio/ocean_waves.mp3',
+      icon: Icons.waves,
+      category: SoundCategory.nature,
+      accentColor: Color(0xFF1E90FF),
+    ),
+    SoundTile(
+      id: 'forest',
+      name: 'Forest',
+      assetPath: 'assets/audio/forest.mp3',
+      icon: Icons.forest,
+      category: SoundCategory.nature,
+      accentColor: Color(0xFF32CD32),
+    ),
+  ];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'icon': icon,
         'assetPath': assetPath,
-        'isActive': isActive,
-        'volume': volume,
       };
 
-  factory SoundTile.fromJson(Map<String, dynamic> json) => SoundTile(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        icon: json['icon'] as String,
-        assetPath: json['assetPath'] as String,
-        isActive: json['isActive'] as bool? ?? false,
-        volume: (json['volume'] as num?)?.toDouble() ?? 0.7,
-      );
-}
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SoundTile && runtimeType == other.runtimeType && id == other.id;
 
-class AmbientMix {
-  final String id;
-  final String name;
-  final DateTime createdAt;
-  final Map<String, double> activeSounds; // soundId -> volume
-
-  AmbientMix({
-    required this.id,
-    required this.name,
-    required this.createdAt,
-    required this.activeSounds,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'createdAt': createdAt.toIso8601String(),
-        'activeSounds': activeSounds,
-      };
-
-  factory AmbientMix.fromJson(Map<String, dynamic> json) => AmbientMix(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-        activeSounds: Map<String, double>.from(
-          (json['activeSounds'] as Map).map(
-            (k, v) => MapEntry(k as String, (v as num).toDouble()),
-          ),
-        ),
-      );
-}
-
-enum TimerDuration {
-  fifteen(Duration(minutes: 15), '15m'),
-  thirty(Duration(minutes: 30), '30m'),
-  sixty(Duration(minutes: 60), '1h'),
-  twoHours(Duration(hours: 2), '2h'),
-  infinite(Duration.zero, '∞');
-
-  final Duration duration;
-  final String label;
-  const TimerDuration(this.duration, this.label);
+  @override
+  int get hashCode => id.hashCode;
 }
